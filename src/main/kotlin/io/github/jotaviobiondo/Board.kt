@@ -21,10 +21,7 @@ class Board(val width: Int, val height: Int) {
     }
 
     private fun randomFood(): Food {
-        val randomX = Random.nextInt(0, this.width)
-        val randomY = Random.nextInt(0, this.height)
-
-        return Food(randomX, randomY)
+        return Food.random(width, height)
     }
 
     fun spawnNewFood() {
