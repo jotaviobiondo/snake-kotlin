@@ -1,7 +1,5 @@
 package io.github.jotaviobiondo
 
-import kotlin.random.Random
-
 class Board(val width: Int, val height: Int) {
 
     companion object {
@@ -10,15 +8,11 @@ class Board(val width: Int, val height: Int) {
 
     val snake = Snake(INITIAL_SNAKE_LENGTH)
 
-    var food: Food
+    var food: Food = randomFood()
 
     var gameOver = false
 
-    var nextDirection: Snake.Direction = Snake.Direction.RIGHT
-
-    init {
-        food = randomFood()
-    }
+    var nextDirection = Snake.Direction.RIGHT
 
     private fun randomFood(): Food {
         return Food.random(width, height)
@@ -36,9 +30,7 @@ class Board(val width: Int, val height: Int) {
             return
         }
 
-        snake.changeDirection(nextDirection)
-
-        snake.move()
+        snake.changeDirectionAndMove(nextDirection)
 
         checkWallsCollision()
 
@@ -48,23 +40,18 @@ class Board(val width: Int, val height: Int) {
     }
 
     fun turnSnakeUp() {
-//        snake.turnUp()
         nextDirection = Snake.Direction.UP
     }
 
     fun turnSnakeDown() {
-//        snake.turnDown()
         nextDirection = Snake.Direction.DOWN
     }
 
     fun turnSnakeLeft() {
-//        snake.turnLeft()
         nextDirection = Snake.Direction.LEFT
     }
 
     fun turnSnakeRight() {
-//        snake.turnRight()
-
         nextDirection = Snake.Direction.RIGHT
     }
 

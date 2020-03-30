@@ -4,22 +4,28 @@ package io.github.jotaviobiondo
 class Snake(initialSnakeLength: Int = 1) {
 
     enum class Direction {
-        UP, DOWN, RIGHT, LEFT
+        UP, DOWN, RIGHT, LEFT;
+
+        fun changeIfPossible(direction: Direction): Direction {
+            val upDown = listOf(UP, DOWN)
+            val leftRight = listOf(LEFT, RIGHT)
+
+            return when (direction) {
+                UP, DOWN -> if (this in leftRight) direction else this
+                RIGHT, LEFT -> if (this in upDown) direction else this
+            }
+        }
     }
 
     // TODO: make the getter immutable
     val body: MutableList<Position> = mutableListOf(Position(0, 0))
 
-    var currentDirection: Direction = Direction.RIGHT
+    var currentDirection = Direction.RIGHT
         private set
 
-    val head: Position get() = body[0]
+    val head get() = body[0]
 
-    private val tail: Position
-        get() {
-            val index = if (length == 0) 0 else (length - 1)
-            return body[index]
-        }
+    val tail get() = body[length - 1]
 
     val length get() = body.size
 
@@ -34,37 +40,8 @@ class Snake(initialSnakeLength: Int = 1) {
         }
     }
 
-    fun turnUp() {
-        if (currentDirection == Direction.LEFT || currentDirection == Direction.RIGHT) {
-            currentDirection = Direction.UP
-        }
-    }
-
-    fun turnDown() {
-        if (currentDirection == Direction.LEFT || currentDirection == Direction.RIGHT) {
-            currentDirection = Direction.DOWN
-        }
-    }
-
-    fun turnRight() {
-        if (currentDirection == Direction.UP || currentDirection == Direction.DOWN) {
-            currentDirection = Direction.RIGHT
-        }
-    }
-
-    fun turnLeft() {
-        if (currentDirection == Direction.UP || currentDirection == Direction.DOWN) {
-            currentDirection = Direction.LEFT
-        }
-    }
-
     fun changeDirection(direction: Direction) {
-        when (direction) {
-            Direction.UP -> turnUp()
-            Direction.DOWN -> turnDown()
-            Direction.RIGHT -> turnRight()
-            Direction.LEFT -> turnLeft()
-        }
+        currentDirection = currentDirection.changeIfPossible(direction)
     }
 
     fun move() {
@@ -74,6 +51,11 @@ class Snake(initialSnakeLength: Int = 1) {
             Direction.RIGHT -> doMove(x = 1)
             Direction.LEFT -> doMove(x = -1)
         }
+    }
+
+    fun changeDirectionAndMove(direction: Direction) {
+        changeDirection(direction)
+        move()
     }
 
     private fun doMove(x: Int = 0, y: Int = 0) {
