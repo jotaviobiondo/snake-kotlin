@@ -27,6 +27,8 @@ class Snake(initialSnakeLength: Int = 1) {
         private set
 
     init {
+        check(initialSnakeLength > 0) { "Initial snake length must be greater than 0. Got $initialSnakeLength." }
+
         repeat(initialSnakeLength - 1) {
             grow()
         }
