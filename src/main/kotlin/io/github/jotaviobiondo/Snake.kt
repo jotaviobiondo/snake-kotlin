@@ -17,17 +17,18 @@ class Snake(initialSnakeLength: Int = 1) {
         }
     }
 
-    // TODO: make the getter immutable
-    val body: MutableList<Position> = mutableListOf(Position(0, 0))
+    private val _body = mutableListOf(Position(0, 0))
 
-    var currentDirection = Direction.RIGHT
-        private set
+    val body get() = _body.toList()
 
     val head get() = body[0]
 
     val tail get() = body[length - 1]
 
     val length get() = body.size
+
+    var currentDirection = Direction.RIGHT
+        private set
 
     var dead = false
         private set
@@ -62,12 +63,12 @@ class Snake(initialSnakeLength: Int = 1) {
         val newX = head.x + x
         val newY = head.y + y
 
-        body.removeAt(body.lastIndex)
-        body.add(0, Position(newX, newY))
+        _body.removeAt(_body.lastIndex)
+        _body.add(0, Position(newX, newY))
     }
 
     fun grow() {
-        body.add(Position(tail.x, tail.y))
+        _body.add(Position(tail.x, tail.y))
     }
 
     fun growIfFoodWasEaten(food: Food) {
