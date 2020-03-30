@@ -78,12 +78,8 @@ class Snake(initialSnakeLength: Int = 1) {
         val newX = head.x + x
         val newY = head.y + y
 
-
-        for (i in this.length - 1 downTo 1) {
-            body[i] = body[i - 1]
-        }
-
-        body[0] = Position(newX, newY)
+        body.removeAt(body.lastIndex)
+        body.add(0, Position(newX, newY))
     }
 
     fun grow() {
