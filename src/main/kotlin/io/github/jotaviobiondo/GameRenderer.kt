@@ -4,7 +4,6 @@ import io.github.jotaviobiondo.GameCanvas.Align
 import java.awt.Color
 import java.awt.Font
 import java.awt.Rectangle
-import java.awt.geom.Line2D
 
 class GameRenderer(private val game: Game) {
 
@@ -37,6 +36,7 @@ class GameRenderer(private val game: Game) {
         val height = (BORDER_SIZE * 2) + boardBounds.height
 
         canvas = GameCanvas(width, height)
+
     }
 
     fun render() {
@@ -56,27 +56,26 @@ class GameRenderer(private val game: Game) {
 
     private fun renderGameOver() {
         canvas.withColor(textColor) {
-            font = Font(null, Font.BOLD, 36)
-            canvas.drawString("GAME OVER", xAlign = Align.CENTER, yAlign = Align.CENTER)
+            withFont(Font(null, Font.BOLD, 36)) {
+                drawString("GAME OVER", xAlign = Align.CENTER, yAlign = Align.CENTER)
+            }
 
-            font = Font(null, Font.BOLD, 18)
-            canvas.drawString("PRESS <ENTER> TO RESTART", yOffset = 50, xAlign = Align.CENTER, yAlign = Align.CENTER)
+            withFont(Font(null, Font.BOLD, 18)) {
+                drawString("PRESS <ENTER> TO RESTART", yOffset = 50, xAlign = Align.CENTER, yAlign = Align.CENTER)
+            }
         }
     }
 
     private fun renderBackground() {
         canvas.withColor(backgroundColor) {
-//            g2d.fill(canvas.bounds)
-            fill(Rectangle(0, 0, canvas.width, canvas.height))
-//            fillRect(0, 0, canvas.width, canvas.height)
+            drawFilledRect(0, 0, canvas.width, canvas.height)
         }
     }
 
     private fun renderBoard() {
         canvas.withColor(boardGridColor) {
             for (i in boardBounds.x..boardBounds.maxX.toInt() step PIXELS_PER_BOARD_POINT) {
-//                drawLine(i, boardBounds.y, i, boardBounds.maxY.toInt())
-                draw(Line2D.Double(i.toDouble(), boardBounds.y.toDouble(), i.toDouble(), boardBounds.maxY))
+                drawLine(i, boardBounds.y, i, boardBounds.maxY.toInt())
             }
 
             for (i in boardBounds.y..boardBounds.maxY.toInt() step PIXELS_PER_BOARD_POINT) {
@@ -97,7 +96,7 @@ class GameRenderer(private val game: Game) {
                 val snakeBodyXInPixels = boardPointToPixelPoint(x)
                 val snakeBodyYInPixels = boardPointToPixelPoint(y)
 
-                fillRect(
+                drawFilledRect(
                     snakeBodyXInPixels,
                     snakeBodyYInPixels,
                     PIXELS_PER_BOARD_POINT,
@@ -113,7 +112,7 @@ class GameRenderer(private val game: Game) {
             val foodXInPixels = boardPointToPixelPoint(food.x)
             val foodYInPixels = boardPointToPixelPoint(food.y)
 
-            fillOval(
+            drawFilledOval(
                 foodXInPixels,
                 foodYInPixels,
                 PIXELS_PER_BOARD_POINT - 1,

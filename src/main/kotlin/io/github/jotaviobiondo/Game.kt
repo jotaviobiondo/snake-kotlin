@@ -46,7 +46,7 @@ class Game {
         window.isResizable = false
         window.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
 
-        window.add(gameRenderer.canvas.canvas)
+        window.add(gameRenderer.canvas.toAwtComponent())
 
         window.pack()
         window.setLocationRelativeTo(null)
