@@ -3,6 +3,7 @@ package io.github.jotaviobiondo
 import io.github.jotaviobiondo.GameCanvas.Align
 import java.awt.Color
 import java.awt.Font
+import java.awt.Point
 import java.awt.Rectangle
 
 class GameRenderer(private val game: Game) {
@@ -44,8 +45,8 @@ class GameRenderer(private val game: Game) {
     private fun renderGame() {
         renderBackground()
         renderBoard()
-        renderFood()
-        renderSnake()
+        game.board.food.render()
+        game.board.snake.render()
 
         if (game.gameOver) {
             renderGameOver()
@@ -95,38 +96,22 @@ class GameRenderer(private val game: Game) {
         }
     }
 
-    private fun renderSnake() {
+    private fun Snake.render() {
         canvas.draw(snakeColor) {
-            val snake = game.board.snake
-            for ((x, y) in snake.body) {
-                val snakeBodyXInPixels = boardPointToPixelPoint(x)
-                val snakeBodyYInPixels = boardPointToPixelPoint(y)
-
-                rect(
-                    snakeBodyXInPixels,
-                    snakeBodyYInPixels,
-                    PIXELS_PER_BOARD_POINT,
-                    PIXELS_PER_BOARD_POINT,
-                    filled = true
-                )
-            }
+            body
+                .map { it.toPixelPoint() }
+                .forEach { square(it, PIXELS_PER_BOARD_POINT, filled = true) }
         }
     }
 
-    private fun renderFood() {
+    private fun Food.render() {
         canvas.draw(foodColor) {
-            val food = game.board.food
-            val foodXInPixels = boardPointToPixelPoint(food.x)
-            val foodYInPixels = boardPointToPixelPoint(food.y)
-
-            oval(
-                foodXInPixels,
-                foodYInPixels,
-                PIXELS_PER_BOARD_POINT - 1,
-                PIXELS_PER_BOARD_POINT - 1,
-                filled = true
-            )
+            circle(position.toPixelPoint(), PIXELS_PER_BOARD_POINT, filled = true)
         }
+    }
+
+    private fun Position.toPixelPoint(): Point {
+        return Point(boardPointToPixelPoint(x), boardPointToPixelPoint(y))
     }
 
     private fun boardPointToPixelPoint(p: Int): Int {
