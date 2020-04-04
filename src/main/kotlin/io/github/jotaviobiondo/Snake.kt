@@ -6,15 +6,16 @@ class Snake(initialSnakeLength: Int = 1) {
     enum class Direction {
         UP, DOWN, RIGHT, LEFT;
 
-        fun changeIfPossible(direction: Direction): Direction {
-            val upDown = listOf(UP, DOWN)
-            val leftRight = listOf(LEFT, RIGHT)
-
+        infix fun isOppositeOf(direction: Direction): Boolean {
             return when (direction) {
-                UP, DOWN -> if (this in leftRight) direction else this
-                RIGHT, LEFT -> if (this in upDown) direction else this
+                UP -> this == DOWN
+                DOWN -> this == UP
+                RIGHT -> this == LEFT
+                LEFT -> this == RIGHT
             }
         }
+
+        infix fun isNotOppositeOf(direction: Direction): Boolean = !this.isOppositeOf(direction)
     }
 
     private val _body = mutableListOf(Position(0, 0))
@@ -42,7 +43,9 @@ class Snake(initialSnakeLength: Int = 1) {
     }
 
     fun changeDirection(direction: Direction) {
-        currentDirection = currentDirection.changeIfPossible(direction)
+        if (currentDirection isNotOppositeOf direction) {
+            currentDirection = direction
+        }
     }
 
     fun move() {
