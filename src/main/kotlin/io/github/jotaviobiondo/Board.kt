@@ -9,16 +9,18 @@ class Board(val width: Int, val height: Int) {
     val snake = Snake(INITIAL_SNAKE_LENGTH)
 
     var food: Food = randomFood()
+        private set
 
     var gameOver = false
+        private set
 
-    var nextDirection = Snake.Direction.RIGHT
+    private var nextDirection = Snake.Direction.RIGHT
 
     private fun randomFood(): Food {
         return Food.random(width, height)
     }
 
-    fun spawnNewFood() {
+    private fun spawnNewFood() {
         food = randomFood()
     }
 
