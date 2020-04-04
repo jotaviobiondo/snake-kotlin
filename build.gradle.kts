@@ -1,9 +1,8 @@
 plugins {
-    java
     kotlin("jvm") version "1.3.71"
 }
 
-group = "io.github.joaotavio"
+group = "io.github.jotaviobiondo"
 
 repositories {
     mavenCentral()
