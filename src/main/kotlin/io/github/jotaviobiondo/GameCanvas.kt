@@ -16,6 +16,11 @@ class GameCanvas(val width: Int, val height: Int) {
         START, END, CENTER
     }
 
+    companion object {
+        val DEFAULT_COLOR: Color = Color.BLACK
+        val DEFAULT_FONT = Font(Font.MONOSPACED, Font.PLAIN, 18)
+    }
+
     private val canvas = Canvas()
 
     private val bufferStrategy: BufferStrategy by lazy {
@@ -42,63 +47,72 @@ class GameCanvas(val width: Int, val height: Int) {
         bufferStrategy.show()
     }
 
-    fun withColor(color: Color, doPainting: GameCanvas.() -> Unit) {
-        val oldColor = g2d.color
-        g2d.color = color
-
-        this.doPainting()
-
-        g2d.color = oldColor
+    fun draw(
+        color: Color = DEFAULT_COLOR,
+        doDrawing: GameCanvas.() -> Unit
+    ) {
+        withColor(color) {
+            this.doDrawing()
+        }
     }
 
-    fun withFont(font: Font, doPainting: GameCanvas.() -> Unit) {
-        val oldFont = g2d.font
-        g2d.font = font
+    fun shape(shape: Shape, filled: Boolean = false) = if (filled) g2d.fill(shape) else g2d.draw(shape)
 
-        this.doPainting()
+    fun line(x1: Int, y1: Int, x2: Int, y2: Int) = g2d.drawLine(x1, y1, x2, y2)
 
-        g2d.font = oldFont
-    }
+    fun rect(x: Int, y: Int, width: Int, height: Int, filled: Boolean = false) =
+        if (filled) g2d.fillRect(x, y, width, height) else g2d.drawRect(x, y, width, height)
 
-    fun drawString(
+    fun oval(x: Int, y: Int, width: Int, height: Int, filled: Boolean = false) =
+        if (filled) g2d.fillOval(x, y, width, height) else g2d.drawOval(x, y, width, height)
+
+    fun string(
         str: String,
         xOffset: Int = 0,
         yOffset: Int = 0,
         xAlign: Align = Align.START,
-        yAlign: Align = Align.START
+        yAlign: Align = Align.START,
+        fontSize: Int = DEFAULT_FONT.size,
+        fontStyle: Int = DEFAULT_FONT.style
     ) {
-        val stringBounds = g2d.fontMetrics.getStringBounds(str, g2d)
-        val stringWidth = stringBounds.width.toInt()
-        val stringHeight = stringBounds.height.toInt()
+        withFont(DEFAULT_FONT.deriveFont(fontStyle, fontSize.toFloat())) {
+            val stringBounds = g2d.fontMetrics.getStringBounds(str, g2d)
+            val stringWidth = stringBounds.width.toInt()
+            val stringHeight = stringBounds.height.toInt()
 
-        val x = when (xAlign) {
-            Align.START -> 0
-            Align.END -> width - stringWidth
-            Align.CENTER -> (width / 2) - (stringWidth / 2)
+            val x = when (xAlign) {
+                Align.START -> 0
+                Align.END -> width - stringWidth
+                Align.CENTER -> (width / 2) - (stringWidth / 2)
+            }
+
+            val y = when (yAlign) {
+                Align.START -> stringHeight
+                Align.END -> height
+                Align.CENTER -> (height / 2) - (stringHeight / 2)
+            }
+
+            g2d.drawString(str, x + xOffset, y + yOffset)
         }
-
-        val y = when (yAlign) {
-            Align.START -> stringHeight
-            Align.END -> height
-            Align.CENTER -> (height / 2) - (stringHeight / 2)
-        }
-
-        g2d.drawString(str, x + xOffset, y + yOffset)
     }
 
-    fun draw(shape: Shape) = g2d.draw(shape)
+    private inline fun withColor(color: Color, doPainting: () -> Unit) {
+        val oldColor = g2d.color
+        g2d.color = color
 
-    fun drawFilled(shape: Shape) = g2d.fill(shape)
+        doPainting()
 
-    fun drawLine(x1: Int, y1: Int, x2: Int, y2: Int) = g2d.drawLine(x1, y1, x2, y2)
+        g2d.color = oldColor
+    }
 
-    fun drawRect(x: Int, y: Int, width: Int, height: Int) = g2d.drawRect(x, y, width, height)
+    private inline fun withFont(font: Font, doPainting: () -> Unit) {
+        val oldFont = g2d.font
+        g2d.font = font
 
-    fun drawFilledRect(x: Int, y: Int, width: Int, height: Int) = g2d.fillRect(x, y, width, height)
+        doPainting()
 
-    fun drawOval(x: Int, y: Int, width: Int, height: Int) = g2d.drawOval(x, y, width, height)
-
-    fun drawFilledOval(x: Int, y: Int, width: Int, height: Int) = g2d.fillOval(x, y, width, height)
+        g2d.font = oldFont
+    }
 
     fun toAwtComponent(): Component = canvas
 

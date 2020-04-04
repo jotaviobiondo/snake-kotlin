@@ -36,11 +36,10 @@ class GameRenderer(private val game: Game) {
         val height = (BORDER_SIZE * 2) + boardBounds.height
 
         canvas = GameCanvas(width, height)
-
     }
 
     fun render() {
-        canvas.render { this.renderGame() }
+        canvas.render { renderGame() }
     }
 
     private fun renderGame() {
@@ -55,68 +54,78 @@ class GameRenderer(private val game: Game) {
     }
 
     private fun renderGameOver() {
-        canvas.withColor(textColor) {
-            withFont(Font(null, Font.BOLD, 36)) {
-                drawString("GAME OVER", xAlign = Align.CENTER, yAlign = Align.CENTER)
-            }
+        canvas.draw(textColor) {
+            string(
+                "GAME OVER",
+                xAlign = Align.CENTER,
+                yAlign = Align.CENTER,
+                fontStyle = Font.BOLD,
+                fontSize = 36
+            )
 
-            withFont(Font(null, Font.BOLD, 18)) {
-                drawString("PRESS <ENTER> TO RESTART", yOffset = 50, xAlign = Align.CENTER, yAlign = Align.CENTER)
-            }
+            string(
+                "PRESS <ENTER> TO RESTART",
+                yOffset = 50,
+                xAlign = Align.CENTER,
+                yAlign = Align.CENTER,
+                fontStyle = Font.BOLD,
+                fontSize = 18
+            )
         }
     }
 
     private fun renderBackground() {
-        canvas.withColor(backgroundColor) {
-            drawFilledRect(0, 0, canvas.width, canvas.height)
+        canvas.draw(backgroundColor) {
+            rect(0, 0, canvas.width, canvas.height, filled = true)
         }
     }
 
     private fun renderBoard() {
-        canvas.withColor(boardGridColor) {
-            for (i in boardBounds.x..boardBounds.maxX.toInt() step PIXELS_PER_BOARD_POINT) {
-                drawLine(i, boardBounds.y, i, boardBounds.maxY.toInt())
+        canvas.draw(boardGridColor) {
+            for (x in boardBounds.x until boardBounds.maxX.toInt() step PIXELS_PER_BOARD_POINT) {
+                line(x, boardBounds.y, x, boardBounds.maxY.toInt())
             }
 
-            for (i in boardBounds.y..boardBounds.maxY.toInt() step PIXELS_PER_BOARD_POINT) {
-                drawLine(boardBounds.x, i, boardBounds.maxX.toInt(), i)
+            for (y in boardBounds.y until boardBounds.maxY.toInt() step PIXELS_PER_BOARD_POINT) {
+                line(boardBounds.x, y, boardBounds.maxX.toInt(), y)
             }
         }
 
-        canvas.withColor(boardBorderColor) {
-            // g2d.stroke = BasicStroke(2F)
-            draw(boardBounds)
+        canvas.draw(boardBorderColor) {
+            shape(boardBounds)
         }
     }
 
     private fun renderSnake() {
-        canvas.withColor(snakeColor) {
+        canvas.draw(snakeColor) {
             val snake = game.board.snake
             for ((x, y) in snake.body) {
                 val snakeBodyXInPixels = boardPointToPixelPoint(x)
                 val snakeBodyYInPixels = boardPointToPixelPoint(y)
 
-                drawFilledRect(
+                rect(
                     snakeBodyXInPixels,
                     snakeBodyYInPixels,
                     PIXELS_PER_BOARD_POINT,
-                    PIXELS_PER_BOARD_POINT
+                    PIXELS_PER_BOARD_POINT,
+                    filled = true
                 )
             }
         }
     }
 
     private fun renderFood() {
-        canvas.withColor(foodColor) {
+        canvas.draw(foodColor) {
             val food = game.board.food
             val foodXInPixels = boardPointToPixelPoint(food.x)
             val foodYInPixels = boardPointToPixelPoint(food.y)
 
-            drawFilledOval(
+            oval(
                 foodXInPixels,
                 foodYInPixels,
                 PIXELS_PER_BOARD_POINT - 1,
-                PIXELS_PER_BOARD_POINT - 1
+                PIXELS_PER_BOARD_POINT - 1,
+                filled = true
             )
         }
     }
