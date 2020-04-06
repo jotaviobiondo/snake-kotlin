@@ -65,18 +65,8 @@ class Game {
         timer.start()
     }
 
-    fun restart() {
-        timer.restart()
-    }
-
-    fun pause() {
+    private fun pause() {
         paused = !paused
-
-        if (paused) {
-            timer.stop()
-        } else {
-            timer.start()
-        }
     }
 
     /**
@@ -88,21 +78,27 @@ class Game {
     }
 
     private fun update() {
+        handleInput()
+
+        if (!paused) {
+            board.tick()
+        }
+
+        if (board.gameOver) {
+            gameOver = true
+        }
+    }
+
+    private fun handleInput() {
         inputHandler.popFirstKey() {
             when (it) {
                 KeyEvent.VK_UP -> board.turnSnakeUp()
                 KeyEvent.VK_DOWN -> board.turnSnakeDown()
                 KeyEvent.VK_RIGHT -> board.turnSnakeRight()
                 KeyEvent.VK_LEFT -> board.turnSnakeLeft()
-                // KeyEvent.VK_P -> pause()
+                KeyEvent.VK_P -> pause()
                 // KeyEvent.VK_ENTER ->
             }
-        }
-
-        board.tick()
-
-        if (board.gameOver) {
-            gameOver = true
         }
     }
 

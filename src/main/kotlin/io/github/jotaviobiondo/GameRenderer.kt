@@ -51,26 +51,9 @@ class GameRenderer(private val game: Game) {
         if (game.gameOver) {
             renderGameOver()
         }
-    }
 
-    private fun renderGameOver() {
-        canvas.draw(textColor) {
-            string(
-                "GAME OVER",
-                xAlign = Align.CENTER,
-                yAlign = Align.CENTER,
-                fontStyle = Font.BOLD,
-                fontSize = 36
-            )
-
-            string(
-                "PRESS <ENTER> TO RESTART",
-                yOffset = 50,
-                xAlign = Align.CENTER,
-                yAlign = Align.CENTER,
-                fontStyle = Font.BOLD,
-                fontSize = 18
-            )
+        if (game.paused) {
+            renderPause()
         }
     }
 
@@ -107,6 +90,48 @@ class GameRenderer(private val game: Game) {
     private fun Food.render() {
         canvas.draw(foodColor) {
             circle(position.toPixelPoint(), PIXELS_PER_BOARD_POINT, filled = true)
+        }
+    }
+
+    private fun renderGameOver() {
+        canvas.draw(textColor) {
+            string(
+                "GAME OVER",
+                xAlign = Align.CENTER,
+                yAlign = Align.CENTER,
+                fontStyle = Font.BOLD,
+                fontSize = 36
+            )
+
+            string(
+                "PRESS <ENTER> TO RESTART",
+                yOffset = 50,
+                xAlign = Align.CENTER,
+                yAlign = Align.CENTER,
+                fontStyle = Font.BOLD,
+                fontSize = 18
+            )
+        }
+    }
+
+    private fun renderPause() {
+        canvas.draw(textColor) {
+            string(
+                "PAUSED",
+                xAlign = Align.CENTER,
+                yAlign = Align.CENTER,
+                fontStyle = Font.BOLD,
+                fontSize = 36
+            )
+
+            string(
+                "PRESS <P> TO RESUME",
+                yOffset = 50,
+                xAlign = Align.CENTER,
+                yAlign = Align.CENTER,
+                fontStyle = Font.BOLD,
+                fontSize = 18
+            )
         }
     }
 
