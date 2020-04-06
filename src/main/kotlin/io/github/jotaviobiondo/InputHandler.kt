@@ -3,7 +3,7 @@ package io.github.jotaviobiondo
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 
-class InputHandler : KeyListener {
+class InputHandler(private vararg val keysOfInterest: Int) : KeyListener {
 
     private var keyEvents = mutableListOf<Int>()
 
@@ -15,7 +15,10 @@ class InputHandler : KeyListener {
     }
 
     override fun keyReleased(e: KeyEvent) {
-        keyEvents.add(e.keyCode)
+        val keyCode = e.keyCode
+        if (keyCode in keysOfInterest) {
+            keyEvents.add(keyCode)
+        }
     }
 
     fun popFirstKey(action: (Int) -> Unit) {

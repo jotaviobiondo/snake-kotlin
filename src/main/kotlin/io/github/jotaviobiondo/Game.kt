@@ -25,7 +25,9 @@ class Game {
 
     private val window: JFrame = JFrame(GAME_NAME)
 
-    private val inputHandler = InputHandler()
+    private val inputHandler = InputHandler(
+        KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_P, KeyEvent.VK_ENTER
+    )
 
     private val gameRenderer = GameRenderer(this)
 
