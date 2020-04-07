@@ -70,12 +70,15 @@ class Snake(initialSnakeLength: Int = 1) {
         _body.add(0, Position(newX, newY))
     }
 
-    fun grow() {
+    private fun grow() {
         _body.add(Position(tail.x, tail.y))
     }
 
-    fun growIfFoodWasEaten(food: Food) {
-
+    fun growIfFoodWasEaten(food: Food, actionWhenEat: () -> Unit = {}) {
+        if (head == food.position) {
+            grow()
+            actionWhenEat()
+        }
     }
 
     fun die() {

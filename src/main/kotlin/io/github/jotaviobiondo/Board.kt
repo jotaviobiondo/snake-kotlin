@@ -16,13 +16,6 @@ class Board(val width: Int, val height: Int) {
 
     private var nextDirection = Snake.Direction.RIGHT
 
-    private fun randomFood(): Food {
-        return Food.random(width, height)
-    }
-
-    private fun spawnNewFood() {
-        food = randomFood()
-    }
 
     /**
      * Do one move on the board
@@ -34,11 +27,36 @@ class Board(val width: Int, val height: Int) {
 
         snake.changeDirectionAndMove(nextDirection)
 
+        checkAteFood()
+
         checkWallsCollision()
 
         if (snake.dead) {
             gameOver = true
         }
+    }
+
+    private fun checkAteFood() {
+        snake.growIfFoodWasEaten(food) {
+            spawnNewFood()
+        }
+    }
+
+    private fun checkWallsCollision() {
+        val headX = snake.head.x
+        val headY = snake.head.y
+
+        if (headX < 0 || headX > this.width || headY < 0 || headY > this.height) {
+            snake.die()
+        }
+    }
+
+    private fun randomFood(): Food {
+        return Food.random(width, height)
+    }
+
+    private fun spawnNewFood() {
+        food = randomFood()
     }
 
     fun turnSnakeUp() {
@@ -55,14 +73,5 @@ class Board(val width: Int, val height: Int) {
 
     fun turnSnakeRight() {
         nextDirection = Snake.Direction.RIGHT
-    }
-
-    private fun checkWallsCollision() {
-        val headX = snake.head.x
-        val headY = snake.head.y
-
-        if (headX < 0 || headX > this.width || headY < 0 || headY > this.height) {
-            snake.die()
-        }
     }
 }
