@@ -21,7 +21,8 @@ class Game {
         private const val TIMER_DELAY = 100
     }
 
-    val board = Board(BOARD_WIDTH, BOARD_HEIGHT)
+    var board: Board = Board(BOARD_WIDTH, BOARD_HEIGHT)
+        private set
 
     private val window: JFrame = JFrame(GAME_NAME)
 
@@ -45,7 +46,6 @@ class Game {
         get() = gameState == GameState.GAME_OVER
 
 
-
     init {
         setupWindow()
         setupListeners()
@@ -67,17 +67,14 @@ class Game {
     }
 
     fun start() {
-        gameState = GameState.RUNNING
+        newGame()
 
         timer.start()
     }
 
-    private fun pause() {
-        gameState = when (gameState) {
-            GameState.RUNNING -> GameState.PAUSED
-            GameState.PAUSED -> GameState.RUNNING
-            else -> gameState
-        }
+    private fun newGame() {
+        board = Board(BOARD_WIDTH, BOARD_HEIGHT)
+        gameState = GameState.RUNNING
     }
 
     /**
@@ -100,15 +97,28 @@ class Game {
 
     private fun handleInput() {
         inputHandler.popFirstKey() {
-            println(it)
             when (it) {
                 KeyEvent.VK_UP -> board.turnSnakeUp()
                 KeyEvent.VK_DOWN -> board.turnSnakeDown()
                 KeyEvent.VK_RIGHT -> board.turnSnakeRight()
                 KeyEvent.VK_LEFT -> board.turnSnakeLeft()
                 KeyEvent.VK_P -> pause()
-                // KeyEvent.VK_ENTER ->
+                KeyEvent.VK_ENTER -> restartIfIsGameOver()
             }
+        }
+    }
+
+    private fun pause() {
+        gameState = when (gameState) {
+            GameState.RUNNING -> GameState.PAUSED
+            GameState.PAUSED -> GameState.RUNNING
+            else -> gameState
+        }
+    }
+
+    private fun restartIfIsGameOver() {
+        if (isGameOver) {
+            newGame()
         }
     }
 
