@@ -43,10 +43,7 @@ class Board(val width: Int, val height: Int) {
     }
 
     private fun checkWallsCollision() {
-        val headX = snake.head.x
-        val headY = snake.head.y
-
-        if (headX < 0 || headX > this.width || headY < 0 || headY > this.height) {
+        if (snake.head.isOutsideBoard(this)) {
             snake.die()
         }
     }
