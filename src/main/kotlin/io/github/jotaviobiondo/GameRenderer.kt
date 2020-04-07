@@ -48,11 +48,11 @@ class GameRenderer(private val game: Game) {
         game.board.food.render()
         game.board.snake.render()
 
-        if (game.gameOver) {
+        if (game.isGameOver) {
             renderGameOver()
         }
 
-        if (game.paused) {
+        if (game.isPaused) {
             renderPause()
         }
     }

@@ -33,11 +33,18 @@ class Game {
 
     private val timer: Timer = Timer(TIMER_DELAY, this::run)
 
-    var paused = false
-        private set
+    private var gameState = GameState.NOT_STARTED
 
-    var gameOver = false
-        private set
+    val isRunning: Boolean
+        get() = gameState == GameState.RUNNING
+
+    val isPaused: Boolean
+        get() = gameState == GameState.PAUSED
+
+    val isGameOver: Boolean
+        get() = gameState == GameState.GAME_OVER
+
+
 
     init {
         setupWindow()
@@ -60,13 +67,17 @@ class Game {
     }
 
     fun start() {
-        gameOver = false
+        gameState = GameState.RUNNING
 
         timer.start()
     }
 
     private fun pause() {
-        paused = !paused
+        gameState = when (gameState) {
+            GameState.RUNNING -> GameState.PAUSED
+            GameState.PAUSED -> GameState.RUNNING
+            else -> gameState
+        }
     }
 
     /**
@@ -80,17 +91,16 @@ class Game {
     private fun update() {
         handleInput()
 
-        if (!paused) {
+        if (isRunning) {
             board.tick()
         }
 
-        if (board.gameOver) {
-            gameOver = true
-        }
+        checkGameOver()
     }
 
     private fun handleInput() {
         inputHandler.popFirstKey() {
+            println(it)
             when (it) {
                 KeyEvent.VK_UP -> board.turnSnakeUp()
                 KeyEvent.VK_DOWN -> board.turnSnakeDown()
@@ -99,6 +109,12 @@ class Game {
                 KeyEvent.VK_P -> pause()
                 // KeyEvent.VK_ENTER ->
             }
+        }
+    }
+
+    private fun checkGameOver() {
+        if (board.gameOver) {
+            gameState = GameState.GAME_OVER
         }
     }
 
