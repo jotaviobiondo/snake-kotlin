@@ -29,6 +29,8 @@ class Board(val width: Int, val height: Int) {
 
         checkAteFood()
 
+        checkSnakeBodyCollision()
+
         checkWallsCollision()
 
         if (snake.dead) {
@@ -40,6 +42,10 @@ class Board(val width: Int, val height: Int) {
         snake.growIfFoodWasEaten(food) {
             spawnNewFood()
         }
+    }
+
+    private fun checkSnakeBodyCollision() {
+        snake.dieIfCollidesItself()
     }
 
     private fun checkWallsCollision() {

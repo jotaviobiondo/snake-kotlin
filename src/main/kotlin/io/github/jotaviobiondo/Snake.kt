@@ -22,9 +22,9 @@ class Snake(initialSnakeLength: Int = 1) {
 
     val body get() = _body.toList()
 
-    val head get() = body[0]
+    val head get() = _body.first()
 
-    val tail get() = body[length - 1]
+    val tail get() = _body.last()
 
     val length get() = body.size
 
@@ -78,6 +78,14 @@ class Snake(initialSnakeLength: Int = 1) {
         if (head == food.position) {
             grow()
             actionWhenEat()
+        }
+    }
+
+    fun dieIfCollidesItself() {
+        val collided = _body.drop(1).contains(head)
+
+        if (collided) {
+            die()
         }
     }
 
