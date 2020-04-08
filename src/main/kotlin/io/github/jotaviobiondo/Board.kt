@@ -4,6 +4,7 @@ class Board(val width: Int, val height: Int) {
 
     companion object {
         const val INITIAL_SNAKE_LENGTH = 4
+        const val SCORE_INCREMENT = 100
     }
 
     val snake = Snake(INITIAL_SNAKE_LENGTH)
@@ -15,6 +16,9 @@ class Board(val width: Int, val height: Int) {
         private set
 
     private var nextDirection = Snake.Direction.RIGHT
+
+    var score = 0
+        private set
 
 
     /**
@@ -28,9 +32,7 @@ class Board(val width: Int, val height: Int) {
         snake.changeDirectionAndMove(nextDirection)
 
         checkAteFood()
-
         checkSnakeBodyCollision()
-
         checkWallsCollision()
 
         if (snake.dead) {
@@ -41,7 +43,12 @@ class Board(val width: Int, val height: Int) {
     private fun checkAteFood() {
         snake.growIfFoodWasEaten(food) {
             spawnNewFood()
+            incScore()
         }
+    }
+
+    private fun incScore() {
+        score += SCORE_INCREMENT
     }
 
     private fun checkSnakeBodyCollision() {

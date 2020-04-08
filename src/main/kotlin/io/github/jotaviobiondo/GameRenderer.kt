@@ -44,6 +44,7 @@ class GameRenderer(private val game: Game) {
 
     private fun renderGame() {
         renderBackground()
+        renderScore()
         renderBoard()
         game.board.food.render()
         game.board.snake.render()
@@ -60,6 +61,18 @@ class GameRenderer(private val game: Game) {
     private fun renderBackground() {
         canvas.draw(backgroundColor) {
             rect(0, 0, canvas.width, canvas.height, fill = true)
+        }
+    }
+
+    private fun renderScore() {
+        canvas.draw(textColor) {
+            string(
+                "Score: ${game.board.score}",
+                xOffset = BORDER_SIZE,
+                yOffset = 20,
+                fontSize = 18,
+                fontStyle = Font.BOLD
+            )
         }
     }
 
