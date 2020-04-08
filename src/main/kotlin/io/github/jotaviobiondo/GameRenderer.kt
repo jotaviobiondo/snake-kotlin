@@ -17,7 +17,7 @@ class GameRenderer(private val game: Game) {
 
     private val backgroundColor = Color(39, 59, 69)
     private val boardBorderColor = Color(105, 136, 148)
-    private val boardGridColor = Color(62, 78, 90)
+    private val boardGridColor = Color(105, 136, 148, 50)
     private val snakeColor = Color(43, 140, 215)
     private val foodColor = Color.RED
     private val textColor = Color.WHITE
@@ -83,13 +83,13 @@ class GameRenderer(private val game: Game) {
         canvas.draw(snakeColor) {
             body
                 .map { it.toPixelPoint() }
-                .forEach { square(it, PIXELS_PER_BOARD_POINT, fill = true) }
+                .forEach { square(it, PIXELS_PER_BOARD_POINT - 1, fill = true) }
         }
     }
 
     private fun Food.render() {
         canvas.draw(foodColor) {
-            circle(position.toPixelPoint(), PIXELS_PER_BOARD_POINT, fill = true)
+            circle(position.toPixelPoint(), PIXELS_PER_BOARD_POINT - 1, fill = true)
         }
     }
 

@@ -15,8 +15,8 @@ class Game {
     companion object {
         private const val GAME_NAME = "Snake"
 
-        private const val BOARD_WIDTH = 45
-        private const val BOARD_HEIGHT = 35
+        private const val BOARD_WIDTH = 20
+        private const val BOARD_HEIGHT = 25
 
         private const val TIMER_DELAY = 100
     }
@@ -97,7 +97,9 @@ class Game {
 
     private fun handleInput() {
         inputHandler.popFirstKey() {
+            println(it)
             when (it) {
+
                 KeyEvent.VK_UP -> board.turnSnakeUp()
                 KeyEvent.VK_DOWN -> board.turnSnakeDown()
                 KeyEvent.VK_RIGHT -> board.turnSnakeRight()
