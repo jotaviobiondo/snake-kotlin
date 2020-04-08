@@ -57,35 +57,35 @@ class GameCanvas(val width: Int, val height: Int) {
         }
     }
 
-    fun shape(shape: Shape, filled: Boolean = false) =
-        if (filled) g2d.fill(shape) else g2d.draw(shape)
+    fun shape(shape: Shape, fill: Boolean = false) =
+        if (fill) g2d.fill(shape) else g2d.draw(shape)
 
     fun line(x1: Int, y1: Int, x2: Int, y2: Int) =
         g2d.drawLine(x1, y1, x2, y2)
 
-    fun rect(x: Int, y: Int, width: Int, height: Int, filled: Boolean = false) =
-        if (filled) g2d.fillRect(x, y, width, height) else g2d.drawRect(x, y, width, height)
+    fun rect(x: Int, y: Int, width: Int, height: Int, fill: Boolean = false) =
+        if (fill) g2d.fillRect(x, y, width, height) else g2d.drawRect(x, y, width, height)
 
-    fun rect(startPoint: Point, width: Int, height: Int, filled: Boolean = false) =
-        rect(startPoint.x, startPoint.y, width, height, filled)
+    fun rect(startPoint: Point, width: Int, height: Int, fill: Boolean = false) =
+        rect(startPoint.x, startPoint.y, width, height, fill)
 
-    fun square(x: Int, y: Int, length: Int, filled: Boolean = false) =
-        rect(x, y, length, length, filled)
+    fun square(x: Int, y: Int, length: Int, fill: Boolean = false) =
+        rect(x, y, length, length, fill)
 
-    fun square(startPoint: Point, length: Int, filled: Boolean = false) =
-        square(startPoint.x, startPoint.y, length, filled)
+    fun square(startPoint: Point, length: Int, fill: Boolean = false) =
+        square(startPoint.x, startPoint.y, length, fill)
 
-    fun oval(x: Int, y: Int, width: Int, height: Int, filled: Boolean = false) =
-        if (filled) g2d.fillOval(x, y, width, height) else g2d.drawOval(x, y, width, height)
+    fun oval(x: Int, y: Int, width: Int, height: Int, fill: Boolean = false) =
+        if (fill) g2d.fillOval(x, y, width, height) else g2d.drawOval(x, y, width, height)
 
-    fun oval(startPoint: Point, diameter: Int, filled: Boolean) =
-        oval(startPoint.x, startPoint.y, diameter, diameter, filled)
+    fun oval(startPoint: Point, diameter: Int, fill: Boolean) =
+        oval(startPoint.x, startPoint.y, diameter, diameter, fill)
 
-    fun circle(x: Int, y: Int, diameter: Int, filled: Boolean = false) =
-        oval(x, y, diameter, diameter, filled)
+    fun circle(x: Int, y: Int, diameter: Int, fill: Boolean = false) =
+        oval(x, y, diameter, diameter, fill)
 
-    fun circle(startPoint: Point, diameter: Int, filled: Boolean = false) =
-        circle(startPoint.x, startPoint.y, diameter, filled)
+    fun circle(startPoint: Point, diameter: Int, fill: Boolean = false) =
+        circle(startPoint.x, startPoint.y, diameter, fill)
 
     fun string(
         str: String,

@@ -59,7 +59,7 @@ class GameRenderer(private val game: Game) {
 
     private fun renderBackground() {
         canvas.draw(backgroundColor) {
-            rect(0, 0, canvas.width, canvas.height, filled = true)
+            rect(0, 0, canvas.width, canvas.height, fill = true)
         }
     }
 
@@ -83,13 +83,13 @@ class GameRenderer(private val game: Game) {
         canvas.draw(snakeColor) {
             body
                 .map { it.toPixelPoint() }
-                .forEach { square(it, PIXELS_PER_BOARD_POINT, filled = true) }
+                .forEach { square(it, PIXELS_PER_BOARD_POINT, fill = true) }
         }
     }
 
     private fun Food.render() {
         canvas.draw(foodColor) {
-            circle(position.toPixelPoint(), PIXELS_PER_BOARD_POINT, filled = true)
+            circle(position.toPixelPoint(), PIXELS_PER_BOARD_POINT, fill = true)
         }
     }
 
