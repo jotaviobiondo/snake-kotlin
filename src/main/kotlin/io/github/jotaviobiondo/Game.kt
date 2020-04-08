@@ -8,10 +8,6 @@ import javax.swing.Timer
 
 class Game {
 
-    // TODO: clock
-    // TODO: score
-    // TODO (maybe): increase/decrease snake velocity
-
     companion object {
         private const val GAME_NAME = "Snake"
 
@@ -36,14 +32,11 @@ class Game {
 
     private var gameState = GameState.NOT_STARTED
 
-    val isRunning: Boolean
-        get() = gameState == GameState.RUNNING
+    val isRunning: Boolean get() = gameState == GameState.RUNNING
 
-    val isPaused: Boolean
-        get() = gameState == GameState.PAUSED
+    val isPaused: Boolean get() = gameState == GameState.PAUSED
 
-    val isGameOver: Boolean
-        get() = gameState == GameState.GAME_OVER
+    val isGameOver: Boolean get() = gameState == GameState.GAME_OVER
 
 
     init {
@@ -97,9 +90,7 @@ class Game {
 
     private fun handleInput() {
         inputHandler.popFirstKey() {
-            println(it)
             when (it) {
-
                 KeyEvent.VK_UP -> board.turnSnakeUp()
                 KeyEvent.VK_DOWN -> board.turnSnakeDown()
                 KeyEvent.VK_RIGHT -> board.turnSnakeRight()
