@@ -10,8 +10,11 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    testCompile("junit", "junit", "4.12")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.6.1")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:4.0.1")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:4.0.1")
 }
+
 
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -23,5 +26,8 @@ tasks {
     }
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
+    }
+    test {
+        useJUnitPlatform()
     }
 }
