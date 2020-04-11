@@ -62,7 +62,7 @@ class Board(val width: Int, val height: Int) {
     }
 
     private fun randomFood(): Food {
-        return Food.random(width, height)
+        return Food.random(this)
     }
 
     private fun spawnNewFood() {

@@ -2,17 +2,17 @@ package io.github.jotaviobiondo
 
 import kotlin.random.Random
 
-class Food(x: Int, y: Int) {
+class Food private constructor(x: Int, y: Int) {
 
-    val position: Position = Position(x, y)
+    val position = Position(x, y)
 
     val x get() = position.x
     val y get() = position.y
 
     companion object {
-        fun random(maxX: Int, maxY: Int): Food {
-            val randomX = Random.nextInt(0, maxX)
-            val randomY = Random.nextInt(0, maxY)
+        fun random(board: Board): Food {
+            val randomX = Random.nextInt(board.width + 1)
+            val randomY = Random.nextInt(board.height + 1)
 
             return Food(randomX, randomY)
         }
