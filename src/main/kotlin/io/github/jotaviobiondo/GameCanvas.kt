@@ -39,8 +39,7 @@ class GameCanvas(val width: Int, val height: Int) {
         this.g2d = bufferStrategy.drawGraphics as Graphics2D
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
-        g2d.color = Color.BLACK
-        g2d.fillRect(0, 0, canvas.width, canvas.height)
+        clear(Color.BLACK)
 
         renderGame()
 
@@ -86,6 +85,12 @@ class GameCanvas(val width: Int, val height: Int) {
 
     fun circle(startPoint: Point, diameter: Int, fill: Boolean = false) =
         circle(startPoint.x, startPoint.y, diameter, fill)
+
+    fun clear(color: Color = DEFAULT_COLOR) {
+        draw(color) {
+            rect(0, 0, width, height, fill = true)
+        }
+    }
 
     fun string(
         str: String,

@@ -60,9 +60,7 @@ class GameRenderer(private val game: Game) {
     }
 
     private fun renderBackground() {
-        canvas.draw(backgroundColor) {
-            rect(0, 0, canvas.width, canvas.height, fill = true)
-        }
+        canvas.clear(backgroundColor)
     }
 
     private fun renderScore() {
