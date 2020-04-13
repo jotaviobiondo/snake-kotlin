@@ -16,6 +16,7 @@ class Snake(initialSnakeLength: Int = 1) {
         }
 
         infix fun isNotOppositeOf(direction: Direction): Boolean = !this.isOppositeOf(direction)
+
     }
 
     private val _body = mutableListOf(Position(0, 0))
@@ -26,7 +27,7 @@ class Snake(initialSnakeLength: Int = 1) {
 
     val tail get() = _body.last()
 
-    val length get() = body.size
+    val length get() = _body.size
 
     var currentDirection = Direction.RIGHT
         private set
@@ -42,46 +43,36 @@ class Snake(initialSnakeLength: Int = 1) {
         }
     }
 
-    fun changeDirection(direction: Direction) {
+    fun move(board: Board, direction: Direction, whenEatFood: () -> Unit) {
+        changeDirection(direction)
+        doMove()
+        dieIfCollidesItself()
+        dieIfCollidesBoardWalls(board)
+        growIfFoodWasEaten(board.food, whenEatFood)
+    }
+
+    private fun changeDirection(direction: Direction) {
         if (currentDirection isNotOppositeOf direction) {
             currentDirection = direction
         }
     }
 
-    fun move() {
-        when (currentDirection) {
-            Direction.UP -> doMove(y = -1)
-            Direction.DOWN -> doMove(y = 1)
-            Direction.RIGHT -> doMove(x = 1)
-            Direction.LEFT -> doMove(x = -1)
+    private fun doMove() {
+        val (xOffset, yOffset) = when (currentDirection) {
+            Direction.UP -> Pair(0, -1)
+            Direction.DOWN -> Pair(0, 1)
+            Direction.RIGHT -> Pair(1, 0)
+            Direction.LEFT -> Pair(-1, 0)
         }
-    }
 
-    fun changeDirectionAndMove(direction: Direction) {
-        changeDirection(direction)
-        move()
-    }
-
-    private fun doMove(x: Int = 0, y: Int = 0) {
-        val newX = head.x + x
-        val newY = head.y + y
+        val newX = head.x + xOffset
+        val newY = head.y + yOffset
 
         _body.removeAt(_body.lastIndex)
         _body.add(0, Position(newX, newY))
     }
 
-    private fun grow() {
-        _body.add(Position(tail.x, tail.y))
-    }
-
-    fun growIfFoodWasEaten(food: Food, actionWhenEat: () -> Unit = {}) {
-        if (head == food.position) {
-            grow()
-            actionWhenEat()
-        }
-    }
-
-    fun dieIfCollidesItself() {
+    private fun dieIfCollidesItself() {
         val collided = _body.drop(1).contains(head)
 
         if (collided) {
@@ -89,7 +80,24 @@ class Snake(initialSnakeLength: Int = 1) {
         }
     }
 
-    fun die() {
+    private fun dieIfCollidesBoardWalls(board: Board) {
+        if (head.isOutsideBoard(board)) {
+            die()
+        }
+    }
+
+    private fun growIfFoodWasEaten(food: Food, actionWhenEat: () -> Unit = {}) {
+        if (head == food.position) {
+            grow()
+            actionWhenEat()
+        }
+    }
+
+    private fun grow() {
+        _body.add(Position(tail.x, tail.y))
+    }
+
+    private fun die() {
         dead = true
     }
 

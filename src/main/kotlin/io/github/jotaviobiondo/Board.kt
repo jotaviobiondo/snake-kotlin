@@ -29,36 +29,24 @@ class Board(val width: Int, val height: Int) {
             return
         }
 
-        snake.changeDirectionAndMove(nextDirection)
-
-        checkAteFood()
-        checkSnakeBodyCollision()
-        checkWallsCollision()
+        snake.move(
+            board = this,
+            direction = nextDirection,
+            whenEatFood = this::whenSnakeEatFood
+        )
 
         if (snake.dead) {
             gameOver = true
         }
     }
 
-    private fun checkAteFood() {
-        snake.growIfFoodWasEaten(food) {
-            spawnNewFood()
-            incScore()
-        }
+    private fun whenSnakeEatFood() {
+        spawnNewFood()
+        incScore()
     }
 
     private fun incScore() {
         score += SCORE_INCREMENT
-    }
-
-    private fun checkSnakeBodyCollision() {
-        snake.dieIfCollidesItself()
-    }
-
-    private fun checkWallsCollision() {
-        if (snake.head.isOutsideBoard(this)) {
-            snake.die()
-        }
     }
 
     private fun randomFood(): Food {
