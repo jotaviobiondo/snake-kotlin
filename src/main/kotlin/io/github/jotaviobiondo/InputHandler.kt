@@ -1,22 +1,15 @@
 package io.github.jotaviobiondo
 
+import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
-import java.awt.event.KeyListener
 
-class InputHandler(private vararg val keysOfInterest: Int) : KeyListener {
+class InputHandler(private vararg val keysOfInterest: Int) : KeyAdapter() {
 
-    private var keyEvents = mutableListOf<Int>()
-
-
-    override fun keyTyped(e: KeyEvent) {
-    }
-
-    override fun keyPressed(e: KeyEvent) {
-    }
+    private val keyEvents = mutableListOf<Int>()
 
     override fun keyReleased(e: KeyEvent) {
         val keyCode = e.keyCode
-        if (keyCode in keysOfInterest) {
+        if (keysOfInterest.isEmpty() || keyCode in keysOfInterest) {
             keyEvents.add(keyCode)
         }
     }
