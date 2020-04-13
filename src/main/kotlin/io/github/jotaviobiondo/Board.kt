@@ -57,19 +57,7 @@ class Board(val width: Int, val height: Int) {
         food = randomFood()
     }
 
-    fun turnSnakeUp() {
-        nextDirection = Snake.Direction.UP
-    }
-
-    fun turnSnakeDown() {
-        nextDirection = Snake.Direction.DOWN
-    }
-
-    fun turnSnakeLeft() {
-        nextDirection = Snake.Direction.LEFT
-    }
-
-    fun turnSnakeRight() {
-        nextDirection = Snake.Direction.RIGHT
+    fun changeSnakeDirection(direction: Snake.Direction) {
+        nextDirection = direction
     }
 }

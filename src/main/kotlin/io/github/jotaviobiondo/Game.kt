@@ -91,10 +91,10 @@ class Game {
     private fun handleInput() {
         inputHandler.popFirstKey() {
             when (it) {
-                KeyEvent.VK_UP -> board.turnSnakeUp()
-                KeyEvent.VK_DOWN -> board.turnSnakeDown()
-                KeyEvent.VK_RIGHT -> board.turnSnakeRight()
-                KeyEvent.VK_LEFT -> board.turnSnakeLeft()
+                KeyEvent.VK_UP -> board.changeSnakeDirection(Snake.Direction.UP)
+                KeyEvent.VK_DOWN -> board.changeSnakeDirection(Snake.Direction.DOWN)
+                KeyEvent.VK_RIGHT -> board.changeSnakeDirection(Snake.Direction.RIGHT)
+                KeyEvent.VK_LEFT -> board.changeSnakeDirection(Snake.Direction.LEFT)
                 KeyEvent.VK_P -> pause()
                 KeyEvent.VK_ENTER -> restartIfIsGameOver()
             }
