@@ -3,8 +3,8 @@ package io.github.jotaviobiondo
 class Board(val width: Int, val height: Int) {
 
     companion object {
-        const val INITIAL_SNAKE_LENGTH = 4
-        const val SCORE_INCREMENT = 100
+        private const val INITIAL_SNAKE_LENGTH = 4
+        private const val SCORE_INCREMENT = 100
     }
 
     val snake = Snake(INITIAL_SNAKE_LENGTH)
@@ -15,7 +15,8 @@ class Board(val width: Int, val height: Int) {
     var gameOver = false
         private set
 
-    private var nextDirection = Snake.Direction.RIGHT
+    var nextDirection = Snake.Direction.RIGHT
+        private set
 
     var score = 0
         private set
@@ -49,12 +50,12 @@ class Board(val width: Int, val height: Int) {
         score += SCORE_INCREMENT
     }
 
-    private fun randomFood(): Food {
-        return Food.random(this)
-    }
-
     private fun spawnNewFood() {
         food = randomFood()
+    }
+
+    private fun randomFood(): Food {
+        return Food.random(this)
     }
 
     fun changeSnakeDirection(direction: Snake.Direction) {
