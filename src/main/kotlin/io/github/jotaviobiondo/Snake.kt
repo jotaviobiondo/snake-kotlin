@@ -43,7 +43,7 @@ class Snake(initialSnakeLength: Int = 1) {
         }
     }
 
-    fun move(board: Board, direction: Direction, whenEatFood: () -> Unit) {
+    fun move(board: Board, direction: Direction, whenEatFood: () -> Unit = {}) {
         changeDirection(direction)
         doMove()
         dieIfCollidesItself()
