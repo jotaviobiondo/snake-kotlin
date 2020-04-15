@@ -80,8 +80,25 @@ internal class BoardTest {
     private fun createBoard(width: Int = 5, height: Int = 5) = Board(width, height)
 
     private fun moveSnakeToFood(board: Board) {
+        val foodPosition = board.food.position
+
+        if (foodPosition == Position(0, 0)) {
+            with(board) {
+                changeSnakeDirection(Snake.Direction.RIGHT)
+                tick()
+                changeSnakeDirection(Snake.Direction.DOWN)
+                tick()
+                changeSnakeDirection(Snake.Direction.LEFT)
+                tick()
+                changeSnakeDirection(Snake.Direction.UP)
+                tick()
+            }
+
+            return
+        }
+
         with(board) {
-            val (x, y) = food.position
+            val (x, y) = foodPosition
 
             changeSnakeDirection(Snake.Direction.RIGHT)
             repeat(x) { tick() }
