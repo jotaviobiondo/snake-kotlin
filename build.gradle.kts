@@ -1,33 +1,25 @@
 plugins {
-    kotlin("jvm") version "1.3.71"
+    kotlin("jvm") version "1.9.23"
 }
 
 group = "io.github.jotaviobiondo"
+version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-    testImplementation("org.junit.jupiter:junit-jupiter:5.6.1")
-    testImplementation("io.kotest:kotest-runner-junit5-jvm:4.0.1")
-    testImplementation("io.kotest:kotest-assertions-core-jvm:4.0.1")
+    // todo: remove kotest
+    testImplementation(kotlin("test"))
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:4.6.3")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:4.6.3")
 }
 
-
-configure<JavaPluginConvention> {
-    sourceCompatibility = JavaVersion.VERSION_1_8
+tasks.test {
+    useJUnitPlatform()
 }
-
-tasks {
-    compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
-    }
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
-    }
-    test {
-        useJUnitPlatform()
-    }
+kotlin {
+    jvmToolchain(17)
 }
