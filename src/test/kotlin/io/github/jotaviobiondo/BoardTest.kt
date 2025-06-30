@@ -1,80 +1,71 @@
 package io.github.jotaviobiondo
 
-import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.ints.shouldBeGreaterThan
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.types.shouldNotBeSameInstanceAs
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import kotlin.test.assertEquals
+import kotlin.test.assertNotSame
+import kotlin.test.assertTrue
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class BoardTest {
 
     @Test
-    fun `test snake should start at (0,0)`() {
-        with(createBoard()) {
-            snake.head shouldBe Position(0, 0)
-        }
+    fun `snake should start at (0,0)`() {
+        val board = createBoard()
+        assertEquals(Position(x = 0, y = 0), board.snake.head)
     }
 
     @ParameterizedTest
     @EnumSource(value = Snake.Direction::class)
-    fun `test changeSnakeDirection`(direction: Snake.Direction) {
-        with(createBoard()) {
-            changeSnakeDirection(direction)
+    fun `changeSnakeDirection`(direction: Snake.Direction) {
+        val board = createBoard()
+        board.changeSnakeDirection(direction)
 
-            nextDirection shouldBe direction
-        }
+        assertEquals(direction, board.nextDirection)
     }
 
     @Test
-    fun `test game over when snake dies`() {
-        with(createBoard()) {
-            changeSnakeDirection(Snake.Direction.UP)
+    fun `game over when snake dies`() {
+        val board = createBoard()
+        board.changeSnakeDirection(Snake.Direction.UP)
 
-            tick()
+        board.tick()
 
-            snake.head shouldBe Position(0, -1)
-            snake.dead.shouldBeTrue()
-            gameOver.shouldBeTrue()
-        }
+        assertEquals(Position(x = 0, y = -1), board.snake.head)
+        assertEquals(true, board.snake.dead)
+        assertEquals(true, board.gameOver)
     }
 
     @Test
-    fun `test snake should move on tick`() {
-        with(createBoard()) {
-            changeSnakeDirection(Snake.Direction.RIGHT)
+    fun `snake should move on tick`() {
+        val board = createBoard()
+        board.changeSnakeDirection(Snake.Direction.RIGHT)
 
-            tick()
+        board.tick()
 
-            snake.head shouldBe Position(1, 0)
-        }
+        assertEquals(Position(x = 1, y = 0), board.snake.head)
     }
 
     @Test
-    fun `test spawn new random food when snake eat`() {
-        with(createBoard()) {
-            val lastFood = food
+    fun `spawn new random food when snake eat`() {
+        val board = createBoard()
+        val lastFood = board.food
 
-            moveSnakeToFood(this)
+        moveSnakeToFood(board)
 
-            food shouldNotBeSameInstanceAs lastFood
-        }
+        assertNotSame(lastFood, board.food)
     }
 
     @Test
-    fun `test increment score when snake eat food`() {
-        with(createBoard()) {
-            val scoreBefore = score
-            val foodPosition = food.position
+    fun `increment score when snake eat food`() {
+        val board = createBoard()
+        val scoreBefore = board.score
+        val foodPosition = board.food.position
 
-            moveSnakeToFood(this)
+        moveSnakeToFood(board)
 
-            snake.head shouldBe foodPosition
-            score shouldBeGreaterThan scoreBefore
-        }
+        assertEquals(foodPosition, board.snake.head)
+        assertTrue(board.score > scoreBefore)
     }
 
     private fun createBoard(width: Int = 5, height: Int = 5) = Board(width, height)

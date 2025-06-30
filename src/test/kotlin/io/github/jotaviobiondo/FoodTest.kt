@@ -1,18 +1,16 @@
 package io.github.jotaviobiondo
 
-import io.kotest.matchers.booleans.shouldBeFalse
 import org.junit.jupiter.api.RepeatedTest
-import org.junit.jupiter.api.TestInstance
+import kotlin.test.assertEquals
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class FoodTest {
 
     private val board = Board(5, 5)
 
     @RepeatedTest(40)
-    fun `test generate random food for board`() {
+    fun `generate random food must always be inside board`() {
         val food = Food.random(board)
 
-        food.position.isOutsideBoard(board).shouldBeFalse()
+        assertEquals(false, food.position.isOutsideBoard(board))
     }
 }
